@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SwUpdate } from '@angular/service-worker';
+import { SwPush, SwUpdate } from '@angular/service-worker';
 import { DataService } from './data.service';
 
 @Component({
@@ -13,7 +13,7 @@ export class AppComponent {
   update: boolean = false;
   joke: any;
 
-  constructor(updates: SwUpdate, private data: DataService) {
+  constructor(updates: SwUpdate, private data: DataService, private swPush: SwPush) {
     updates.available.subscribe(event => {
 
       //this.update = true;
@@ -26,6 +26,11 @@ export class AppComponent {
     this.data.gimmeJokes().subscribe(res => {
       this.joke = res;
     })
+
+    this.swPush.messages.subscribe(message => {
+      console.log(message);
+    })
+    
   }
 
 }
